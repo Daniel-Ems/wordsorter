@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
 	int partial_results = 0;
 	char *
-	opterr = 0;
+	opterr;
 
 	int command_arguments;
 	while (-1 < (command_arguments = getopt(argc, argv, "rnlsauhc:"))){
@@ -51,11 +51,17 @@ int main(int argc, char *argv[])
 				printf(" number of words in list %d\n", partial_results);
 				break; 
 			default:
-				printf("Default option handler got %c\n", command_arguments);
+				//printf("Default option handler got %c\n", command_arguments);
+				break;
 		}
 	}
 
+	char tmp_buf[256];
 	if(optind != argc){
-		printf("\n");
+		FILE *first = fopen(argv[optind], "r");
+		while(fgets(tmp_buf, 256, first)){
+			strtok(tmp_buf, "\n");
+			printf("%s\n", tmp_buf);
+		}
 	}
 }
