@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-
+int cmpfunc(const void *a, const void *b);
 char *get_words(char *token);
 int main(int argc, char *argv[])
 {
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-
+//TODO: Place in a seperate file or function
 	size_t last_idx =0;
 	char **tmp_hope = malloc((1+last_idx) * sizeof(tmp_hope));
 	tmp_hope[0] = NULL;
@@ -106,7 +106,15 @@ int main(int argc, char *argv[])
 
 	}
 
+	size_t strings_len = sizeof(tmp_hope) / sizeof(char *);
+	qsort(tmp_hope, strings_len, sizeof(char *), cmpfunc);
+}
 
+int cmpfunc(const void *a, const void *b)
+{
+	const char **ia = (const char **)a;
+	const char **ib = (const char **)b;
+	return strcmp (*ia, *ib);
 }
 
 
