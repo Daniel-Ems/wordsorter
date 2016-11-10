@@ -13,12 +13,10 @@ char *get_words(char *token);
 int main(int argc, char *argv[])
 {
 
-	size_t last_idx = 0;
-	int print_limit = last_idx;
-	int partial_results = 0;
+	int print_limit = 0;
 	opterr = 0;
-
 	int command_arguments;
+
 	while (-1 < (command_arguments = getopt(argc, argv, "rnlsauhc:"))){
 		switch(command_arguments){
 			case 'r':
@@ -51,8 +49,7 @@ int main(int argc, char *argv[])
 				break;
 			case 'c':
 				//TODO: prints number passed results
-				partial_results = strtol(optarg,NULL,10);
-				print_limit = partial_results;
+				print_limit = strtol(optarg,NULL,10);
 				break; 
 			default:
 				printf("Default option handler got %c\n", command_arguments);
@@ -61,7 +58,7 @@ int main(int argc, char *argv[])
 	}
 
 //TODO: Place in a seperate file or function
-	//size_t last_idx =0;
+	int last_idx =0;
 	char **tmp_hope = malloc((1+last_idx) * sizeof(tmp_hope));
 	tmp_hope[0] = NULL;
 	char tmp_buf[64];
@@ -102,15 +99,15 @@ int main(int argc, char *argv[])
 
 	qsort(tmp_hope, last_idx, sizeof(char *), cmpfunc);
 
-	if(print_limit == 0){
-		print_limit = last_idx;
-	}
+	//if(print_limit == 0){
+	//	print_limit = last_idx;
+	//}
 
-	int i;
-	for(i = last_idx; i > 0; last_idx--){
-		printf("%s\n", tmp_hope[last_idx]);
+	//int i = last_idx;
+	for(int i= (last_idx - 1); i > 0; i--){
+		printf("%s\n", tmp_hope[i]);
 	}
-	for(i = 0; i < print_limit; ++i ){
+	for(int i = 0; i < print_limit; ++i ){
 		printf("%s\n", tmp_hope[i]);
 	}
 
