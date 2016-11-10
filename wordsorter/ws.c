@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+
+char *get_words(char *token);
 int main(int argc, char *argv[])
 {
 
@@ -61,6 +63,9 @@ int main(int argc, char *argv[])
 	char **tmp_hope = malloc((1+last_idx) * sizeof(tmp_hope));
 	tmp_hope[0] = NULL;
 	char tmp_buf[64];
+	
+
+	//char buf[36];
 
 	char *token;
 	FILE *first;
@@ -70,6 +75,9 @@ int main(int argc, char *argv[])
 	while(fgets(tmp_buf, sizeof(tmp_buf), first)){
 		token = strtok(tmp_buf, " \n");
 		while(token){
+			if(token ==NULL){
+				break;
+			}
 
 			++last_idx;
 
@@ -81,19 +89,44 @@ int main(int argc, char *argv[])
 
 			tmp_hope[last_idx] = NULL;
 
-			if(token ==NULL){
+			char *words = get_words(token);
+/*
+			size_t words_length = sizeof(buf) + 1;
+
+			char *words = malloc(words_length);
+			if(!words){
 				break;
 			}
 
-			tmp_hope[last_idx - 1] = token;
+			strncpy(words, token, words_length);
+*/
+			tmp_hope[last_idx - 1] = words;
 			printf("%s\n", tmp_hope[last_idx - 1]);
 			
 			token = strtok(NULL, " \n");
-			//free(tmp_);
+			//free(words);
 		}
 	}
-	printf("%s\n", *tmp_hope);
-	fclose(first);
-	free(tmp_hope);
+	printf("%s\n", tmp_hope[10]);
 
+
+}
+
+
+char *get_words(char *token)
+{
+			char buf[36];
+			size_t words_length = sizeof(buf) + 1;
+
+			char *words = malloc(words_length);
+			if(!words){
+				return 0;;
+			}
+
+			strncpy(words, token, words_length);
+
+			//tmp_hope[last_idx - 1] = words;
+			//printf("%s\n", tmp_hope[last_idx - 1]);
+
+		return words;
 }
