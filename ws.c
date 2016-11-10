@@ -99,11 +99,11 @@ int main(int argc, char *argv[])
 
 	qsort(tmp_hope, last_idx, sizeof(char *), cmpfunc);
 
-	//if(print_limit == 0){
-	//	print_limit = last_idx;
-	//}
+	if(print_limit == 0){
+		print_limit = last_idx;
+	}
 
-	//int i = last_idx;
+	int i = last_idx;
 	for(int i= (last_idx - 1); i > 0; i--){
 		printf("%s\n", tmp_hope[i]);
 	}
