@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 								"[-l <By Length>] [-s <Scrabble score>]"
 								"[-a <Lexicographically>] [-u <Unique words>]"
 								"[ -c: <insert number>]\n");
-				break;
+				exit(0);//Steussel
 			case 'c':
 				//TODO: prints number passed results
 				print_limit = strtol(optarg,NULL,10);
@@ -71,22 +71,19 @@ int main(int argc, char *argv[])
 	void *tmp_buffer;
 	FILE *first;
 
+do{
 	if(optind != argc){
 		first = fopen(argv[optind], "r");
 	}else{
 		first = stdin;
-		goto hell;
 	}
-	for(; optind < argc; first = fopen(argv[optind], "r")){
-		optind ++;
-		hell:
+		++optind;
 		while(fgets(tmp_buf, 64, first) ){
 			token = strtok(tmp_buf, " \n");
 			while(token){
 				if(token == NULL){
 					break;
 				}
-
 				++last_idx;
 				tmp_buffer = realloc(tmp_hope, sizeof(tmp_hope) *(1 + last_idx));
 				if(!tmp_buffer){
@@ -105,7 +102,7 @@ int main(int argc, char *argv[])
 			}
 		}
 	fclose(first);
-	}
+	}while(argc> optind);
 
 	qsort(tmp_hope, last_idx, sizeof(char *), length_sort);
 
@@ -147,7 +144,13 @@ int length_sort(const void *a, const void *b)
 {
 	return strlen(*(const char**) a) - strlen( *(const char**)b);
 }
+/*
+int scrabble_score(const void *a, const void *b)
+{
+	value = 0;
 
+	while( -1 < 
+*/
 char *get_words(char *token)
 {
 			char buf[36];
