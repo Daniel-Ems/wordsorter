@@ -105,11 +105,16 @@ int main(int argc, char *argv[])
 	}
 	//while(tmp_hope[last_idx - 1] && strlen(tmp_hope[last_idx-1]) > 1){
 
-
-		for(int i= (last_idx - 1); i > 0; i--){
+		// print lexigraphically
+		for(int i = (last_idx - 1); i > last_idx - print_limit; i--){
 			printf("%s\n", tmp_hope[i]);
 		}
-	
+
+		// print certain number of results.
+		for(int i = 0; i < print_limit; i++){
+			printf("%s\n", tmp_hope[i]);
+		}
+
 
 		char **word_list = tmp_hope;
 		while(*word_list){
