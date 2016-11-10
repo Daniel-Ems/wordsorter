@@ -6,6 +6,7 @@
 #include <sysexits.h>
 #include <string.h>  //may not need
 #include <stdlib.h>
+#include <ctype.h>
 
 int main(int argc, char *argv[])
 {
@@ -56,12 +57,24 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	char *tmp_hope[256];
 	char tmp_buf[256];
+	char *b;
+	char *c;
+	int i =0;
 	if(optind != argc){
 		FILE *first = fopen(argv[optind], "r");
-		while(fgets(tmp_buf, 256, first)){
-			strtok(tmp_buf, "\n");
-			printf("%s\n", tmp_buf);
+		while(fgets(tmp_buf, sizeof(tmp_buf), first) !=NULL){
+			b = tmp_buf;
+			while(1){
+				c = strtok(b, " \n");
+				b = NULL;
+				if(c ==NULL){
+					break;
+				}
+				tmp_hope[i++] = c;
+				printf("%s\n", c);
+			}
 		}
 	}
 }
