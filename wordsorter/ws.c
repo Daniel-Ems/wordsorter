@@ -61,31 +61,39 @@ int main(int argc, char *argv[])
 	char **tmp_hope = malloc((1+last_idx) * sizeof(tmp_hope));
 	tmp_hope[0] = NULL;
 	char tmp_buf[64];
-	char *set_null;
+
 	char *token;
 	FILE *first;
 	if(optind != argc){
 		first = fopen(argv[optind], "r");
-		
 	}
 	while(fgets(tmp_buf, sizeof(tmp_buf), first)){
-		set_null = tmp_buf;
-		while(1){
-			token = strtok(set_null, " \n");
-			set_null = NULL;
+		token = strtok(tmp_buf, " \n");
+		while(token){
+
+			++last_idx;
+
+			void *tmp_buffer = realloc(tmp_hope, sizeof(*tmp_hope) *(1 + last_idx));
+			if(!tmp_buffer){
+				printf("unable to realloc");
+			}
+			tmp_hope = tmp_buffer;
+
+			tmp_hope[last_idx] = NULL;
+
 			if(token ==NULL){
 				break;
 			}
-			last_idx++;
-			void *tmp_buffer = realloc(tmp_hope, sizeof(*tmp_hope) * last_idx);
-			tmp_hope = tmp_buffer;
-			tmp_hope[last_idx] = token;
-			printf("%s\n", token);
-			//free(tmp_buffer);
+
+			tmp_hope[last_idx - 1] = token;
+			printf("%s\n", tmp_hope[last_idx - 1]);
+			
+			token = strtok(NULL, " \n");
+			//free(tmp_);
 		}
 	}
+	printf("%s\n", *tmp_hope);
 	fclose(first);
 	free(tmp_hope);
-	//printf("%s", tmp_hope);
 
 }
