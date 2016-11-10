@@ -66,13 +66,18 @@ int main(int argc, char *argv[])
 	
 
 	//char buf[36];
-
+	int f = 0;
 	char *token;
 	FILE *first;
 	if(optind != argc){
 		first = fopen(argv[optind], "r");
+	}else{
+		first = stdin;
 	}
-	while(fgets(tmp_buf, sizeof(tmp_buf), first)){
+		
+	while(fgets(tmp_buf, sizeof(tmp_buf), first) ){
+		printf("enter loop %d", f);
+
 		token = strtok(tmp_buf, " \n");
 		while(token){
 			if(token ==NULL){
@@ -90,24 +95,16 @@ int main(int argc, char *argv[])
 			tmp_hope[last_idx] = NULL;
 
 			char *words = get_words(token);
-/*
-			size_t words_length = sizeof(buf) + 1;
 
-			char *words = malloc(words_length);
-			if(!words){
-				break;
-			}
-
-			strncpy(words, token, words_length);
-*/
 			tmp_hope[last_idx - 1] = words;
 			printf("%s\n", tmp_hope[last_idx - 1]);
 			
 			token = strtok(NULL, " \n");
 			//free(words);
+
 		}
+
 	}
-	printf("%s\n", tmp_hope[10]);
 
 
 }
@@ -130,3 +127,5 @@ char *get_words(char *token)
 
 		return words;
 }
+
+
