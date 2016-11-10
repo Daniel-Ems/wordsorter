@@ -62,8 +62,9 @@ int main(int argc, char *argv[])
 	char **tmp_hope = malloc((1+last_idx) * sizeof(tmp_hope));
 	tmp_hope[0] = NULL;
 	char tmp_buf[64];
-
+	char *words;
 	char *token;
+	void *tmp_buffer;
 	FILE *first;
 	if(optind != argc){
 		first = fopen(argv[optind], "r");
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
 		first = stdin;
 	}
 
-	while(fgets(tmp_buf, sizeof(tmp_buf), first) ){
+	while(fgets(tmp_buf, 64, first) ){
 		token = strtok(tmp_buf, " \n");
 		while(token){
 			if(token == NULL){
@@ -79,7 +80,7 @@ int main(int argc, char *argv[])
 			}
 
 			++last_idx;
-			void *tmp_buffer = realloc(tmp_hope, sizeof(*tmp_hope) *(1 + last_idx));
+			tmp_buffer = realloc(tmp_hope, sizeof(tmp_hope) *(1 + last_idx));
 			if(!tmp_buffer){
 				printf("unable to realloc");
 			}
@@ -87,13 +88,13 @@ int main(int argc, char *argv[])
 
 			tmp_hope[last_idx] = NULL;
 
-			char *words = get_words(token);
+			words = get_words(token);
 
 			tmp_hope[last_idx - 1] = words;
 			//printf("%s\n", tmp_hope[last_idx - 1]);
 			
 			token = strtok(NULL, " \n");
-			//free(words);
+			
 		}
 	}
 
@@ -102,15 +103,23 @@ int main(int argc, char *argv[])
 	if(print_limit == 0){
 		print_limit = last_idx;
 	}
+	//while(tmp_hope[last_idx - 1] && strlen(tmp_hope[last_idx-1]) > 1){
 
-	int i = last_idx;
-	for(int i= (last_idx - 1); i > 0; i--){
-		printf("%s\n", tmp_hope[i]);
-	}
-	for(int i = 0; i < print_limit; ++i ){
-		printf("%s\n", tmp_hope[i]);
-	}
 
+		for(int i= (last_idx - 1); i > 0; i--){
+			printf("%s\n", tmp_hope[i]);
+		}
+	
+
+		char **word_list = tmp_hope;
+		while(*word_list){
+			//printf("%s\n", *word_list);
+			free(*word_list);
+			++word_list;
+		}
+
+	free(tmp_hope);
+	fclose(first);
 
 }
 
@@ -134,7 +143,7 @@ char *get_words(char *token)
 
 			//tmp_hope[last_idx - 1] = words;
 			//printf("%s\n", tmp_hope[last_idx - 1]);
-
+		//char *free_me = words;
 		return words;
 }
 
