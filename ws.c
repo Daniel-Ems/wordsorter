@@ -70,36 +70,41 @@ int main(int argc, char *argv[])
 	char *token;
 	void *tmp_buffer;
 	FILE *first;
+
 	if(optind != argc){
 		first = fopen(argv[optind], "r");
 	}else{
 		first = stdin;
+		goto hell;
 	}
+	for(; optind < argc; first = fopen(argv[optind], "r")){
+		optind ++;
+		hell:
+		while(fgets(tmp_buf, 64, first) ){
+			token = strtok(tmp_buf, " \n");
+			while(token){
+				if(token == NULL){
+					break;
+				}
 
-	while(fgets(tmp_buf, 64, first) ){
-		token = strtok(tmp_buf, " \n");
-		while(token){
-			if(token == NULL){
-				break;
+				++last_idx;
+				tmp_buffer = realloc(tmp_hope, sizeof(tmp_hope) *(1 + last_idx));
+				if(!tmp_buffer){
+					printf("unable to realloc");
+				}
+				tmp_hope = tmp_buffer;
+
+				tmp_hope[last_idx] = NULL;
+
+				words = get_words(token);
+
+				tmp_hope[last_idx - 1] = words;
+				//printf("%s\n", tmp_hope[last_idx - 1]);
+
+				token = strtok(NULL, " \n");
 			}
-
-			++last_idx;
-			tmp_buffer = realloc(tmp_hope, sizeof(tmp_hope) *(1 + last_idx));
-			if(!tmp_buffer){
-				printf("unable to realloc");
-			}
-			tmp_hope = tmp_buffer;
-
-			tmp_hope[last_idx] = NULL;
-
-			words = get_words(token);
-
-			tmp_hope[last_idx - 1] = words;
-			//printf("%s\n", tmp_hope[last_idx - 1]);
-			
-			token = strtok(NULL, " \n");
-			
 		}
+	fclose(first);
 	}
 
 	qsort(tmp_hope, last_idx, sizeof(char *), length_sort);
@@ -108,14 +113,14 @@ int main(int argc, char *argv[])
 		print_limit = last_idx;
 	}
 
-		// print lexigraphically
-		for(int i = (last_idx - 1); i >= last_idx - print_limit; i--){
-			printf("%s\n", tmp_hope[i]);
-		}
+		//print lexigraphically
+		//for(int i = (last_idx - 1); i >= last_idx - print_limit; i--){
+		//	printf("%s\n", tmp_hope[i]);
+		//}
 
 		puts("\n");
 
-		// print certain number of results.
+		//print certain number of results.
 		for(int i = 0; i < print_limit; i++){
 			printf("%s\n", tmp_hope[i]);
 		}
@@ -129,7 +134,7 @@ int main(int argc, char *argv[])
 		}
 
 	free(tmp_hope);
-	fclose(first);
+
 
 }
 
@@ -140,7 +145,7 @@ int lexi_sort(const void *a, const void *b)
 
 int length_sort(const void *a, const void *b)
 {
-	return strlen(*(const char**) a - strlen( *(const char**)b));
+	return strlen(*(const char**) a) - strlen( *(const char**)b);
 }
 
 char *get_words(char *token)
