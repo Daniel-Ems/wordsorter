@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+int length_sort(const void *a, const void *b);
 int cmpfunc(const void *a, const void *b);
 char *get_words(char *token);
 int main(int argc, char *argv[])
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
 				printf("Usage: [-r <Reverse results>] [-n < As Number's>]"
 								"[-l <By Length>] [-s <Scrabble score>]"
 								"[-a <Lexicographically>] [-u <Unique words>]"
-								"[ -c: <insert number>]");
+								"[ -c: <insert number>]\n");
 				break;
 			case 'c':
 				//TODO: prints number passed results
@@ -101,7 +102,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	qsort(tmp_hope, last_idx, sizeof(char *), cmpfunc);
+	qsort(tmp_hope, last_idx, sizeof(char *), length_sort);
 
 	if(print_limit == 0){
 		print_limit = last_idx;
@@ -132,11 +133,15 @@ int main(int argc, char *argv[])
 
 }
 
-int cmpfunc(const void *a, const void *b)
+int lexi_sort(const void *a, const void *b)
 {
 	return strcmp(*(const char**) a, *(const char**)b);
 }
 
+int length_sort(const void *a, const void *b)
+{
+	return strlen(*(const char**) a - strlen( *(const char**)b));
+}
 
 char *get_words(char *token)
 {
