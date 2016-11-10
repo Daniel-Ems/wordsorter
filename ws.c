@@ -13,6 +13,8 @@ char *get_words(char *token);
 int main(int argc, char *argv[])
 {
 
+	size_t last_idx =0;
+	int print_limit = last_idx;
 	int partial_results = 0;
 	opterr = 0;
 
@@ -50,7 +52,7 @@ int main(int argc, char *argv[])
 			case 'c':
 				//TODO: prints number passed results
 				partial_results = strtol(optarg,NULL,10);
-				printf(" number of words in list %d\n", partial_results);
+				print_limit = partial_results;
 				break; 
 			default:
 				printf("Default option handler got %c\n", command_arguments);
@@ -59,14 +61,11 @@ int main(int argc, char *argv[])
 	}
 
 //TODO: Place in a seperate file or function
-	size_t last_idx =0;
+
 	char **tmp_hope = malloc((1+last_idx) * sizeof(tmp_hope));
 	tmp_hope[0] = NULL;
 	char tmp_buf[64];
-	
 
-	//char buf[36];
-	int f = 0;
 	char *token;
 	FILE *first;
 	if(optind != argc){
@@ -74,10 +73,8 @@ int main(int argc, char *argv[])
 	}else{
 		first = stdin;
 	}
-		
-	while(fgets(tmp_buf, sizeof(tmp_buf), first) ){
-		printf("enter loop %d", f);
 
+	while(fgets(tmp_buf, sizeof(tmp_buf), first) ){
 		token = strtok(tmp_buf, " \n");
 		while(token){
 			if(token ==NULL){
@@ -85,7 +82,6 @@ int main(int argc, char *argv[])
 			}
 
 			++last_idx;
-
 			void *tmp_buffer = realloc(tmp_hope, sizeof(*tmp_hope) *(1 + last_idx));
 			if(!tmp_buffer){
 				printf("unable to realloc");
@@ -97,24 +93,25 @@ int main(int argc, char *argv[])
 			char *words = get_words(token);
 
 			tmp_hope[last_idx - 1] = words;
-			printf("%s\n", tmp_hope[last_idx - 1]);
+			//printf("%s\n", tmp_hope[last_idx - 1]);
 			
 			token = strtok(NULL, " \n");
 			//free(words);
-
 		}
-
 	}
 
-	size_t strings_len = sizeof(tmp_hope) / sizeof(char *);
-	qsort(tmp_hope, strings_len, sizeof(char *), cmpfunc);
+	qsort(tmp_hope, last_idx, sizeof(char *), cmpfunc);
+
+
+	for(int i = 0; i < print_limit;i++ ){
+		printf("%s\n", tmp_hope[i]);
+	}
+
 }
 
 int cmpfunc(const void *a, const void *b)
 {
-	const char **ia = (const char **)a;
-	const char **ib = (const char **)b;
-	return strcmp (*ia, *ib);
+	return strcmp(*(const char**) a, *(const char**)b);
 }
 
 
@@ -125,7 +122,7 @@ char *get_words(char *token)
 
 			char *words = malloc(words_length);
 			if(!words){
-				return 0;;
+				return 0;
 			}
 
 			strncpy(words, token, words_length);
