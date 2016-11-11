@@ -33,32 +33,33 @@ int length_sort(const void *a, const void *b)
 }
 
 // Alexander Dow helped me with solving the "unque" part of the inner loop.  
-void print_reverse(char **tmp_hope, int last_idx, int print_limit, bool unique)
+void print_reverse(char **word_list, int last_idx, int print_limit, bool unique)
 {
 	for(int i = (last_idx - 1); i >= last_idx - print_limit; i--){
 		int count = 0;
 		for(int b=(i - 1); b > 0; b--){
-			if(unique == true && !strcmp(tmp_hope[i],tmp_hope[b])){
+			if(unique == true && !strcmp(word_list[i],word_list[b])){
 				count++;
 			}
 		}
 		if(count == 0){
-			printf("%s\n", tmp_hope[i]);
+			printf("%s\n", word_list[i]);
 		}
 	}
 }
 
-void print_lexi(char **tmp_hope, int print_limit, int last_idx, bool unique)
+
+void print_lexi(char **word_list, int print_limit, int last_idx, bool unique)
 {
 	for(int i = 0; i < print_limit; i++){
 		int count = 0;
 		for(int b=(i+1) ; b < last_idx; b++){
-			if(unique == true && !strcmp(tmp_hope[i],tmp_hope[b])){
+			if(unique == true && !strcmp(word_list[i],word_list[b])){
 				count++;
 			}
 		}
 		if(count == 0){
-			printf("%s\n", tmp_hope[i]);
+			printf("%s\n", word_list[i]);
 		}
 	}
 }
