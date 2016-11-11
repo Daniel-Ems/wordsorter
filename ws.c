@@ -120,12 +120,13 @@ do{
 	if(print_limit == 0){
 		print_limit = last_idx;
 	}
+
 	if(unique){
 		print_unique(tmp_hope, last_idx, print_limit);
 	}
 	if(reverse){
 		print_reverse(tmp_hope, last_idx, print_limit);
-	}else{
+	}
 		
 	puts("\n");
 
@@ -139,7 +140,7 @@ do{
 	free(tmp_hope);
 
 	}
-}
+
 
 
 
