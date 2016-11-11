@@ -9,7 +9,7 @@
 #include <ctype.h>
 
 
-//int unique(const void *a, const void *b);
+void print_unique(char **tmp_hope, int last_idx, int print_limit);
 int length_sort(const void *a, const void *b);
 int lexi_sort(const void *a, const void *b);
 char *get_words(char *token);
@@ -104,23 +104,25 @@ do{
 				token = strtok(NULL, " \n");
 			}
 		}
+
 	fclose(first);
+
 	}while(argc> optind);
 
-	//qsort(tmp_hope, last_idx, sizeof(char *), sort_func);
+	qsort(tmp_hope, last_idx, sizeof(char *), sort_func);
 
 	if(print_limit == 0){
 		print_limit = last_idx;
 	}
 
-		//print lexigraphically
-		//for(int i = (last_idx - 1); i >= last_idx - print_limit; i--){
-		//	printf("%s\n", tmp_hope[i]);
-		//}
+		print_unique(tmp_hope, last_idx, print_limit);
+
+		for(int i = (last_idx - 1); i >= last_idx - print_limit; i--){
+			printf("%s\n", tmp_hope[i]);
+		}
 
 		puts("\n");
 
-		print_unique(tmp_hope, last_idx);
 
 
 		char **word_list = tmp_hope;
@@ -147,11 +149,11 @@ int length_sort(const void *a, const void *b)
 
 
 	//the inner four loop is compliment of Alexander Dow.
-void(print_unique)
+void print_unique(char **tmp_hope, int last_idx, int print_limit)
 {
-		int count = 0;
 		int b = 0;
 		for(int i = 0; i < print_limit; i++){
+		int count = 0;
 			for(b=(i+1); b < last_idx; b++){
 				if(!strcmp(tmp_hope[i],tmp_hope[b])){
 					count++;
