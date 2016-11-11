@@ -115,21 +115,16 @@ do{
 
 	qsort(tmp_hope, last_idx, sizeof(char *), sort_func);
 
-	
 	if(print_limit == 0){
 		print_limit = last_idx;
 	}
 
-	//if(unique){
-	//	print_unique(tmp_hope, last_idx, print_limit);
-	//}
 	puts("\n");
 	if(reverse){
 		print_reverse(tmp_hope, last_idx, print_limit, unique);
 	}else{
-		print_lexi(tmp_hope, print_limit);
+		print_lexi(tmp_hope, print_limit,last_idx, unique);
 	}
-		
 
 		char **word_list = tmp_hope;
 		while(*word_list){
