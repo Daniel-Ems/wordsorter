@@ -79,29 +79,35 @@ do{
 	}else{
 		first = stdin;
 	}
-		++optind;
-		while(fgets(tmp_buf, 64, first) ){
-			token = strtok(tmp_buf, " \n");
-			while(token){
-				if(token == NULL){
-					break;
-				}
-				++last_idx;
-				tmp_buffer = realloc(tmp_hope, sizeof(tmp_hope) *(1 + last_idx));
-				if(!tmp_buffer){
-					printf("unable to realloc");
-				}
-				tmp_hope = tmp_buffer;
 
-				tmp_hope[last_idx] = NULL;
+	++optind;
+	while(fgets(tmp_buf, 64, first)){
 
-				words = get_words(token);
+		token = strtok(tmp_buf, " \n");
 
-				tmp_hope[last_idx - 1] = words;
+		while(token){
 
-				token = strtok(NULL, " \n");
+			if(token == NULL){
+				break;
 			}
+
+			++last_idx;
+			tmp_buffer = realloc(tmp_hope, sizeof(tmp_hope) *(1 + last_idx));
+			if(!tmp_buffer){
+				printf("unable to realloc");
+			}
+
+			tmp_hope = tmp_buffer;
+
+			tmp_hope[last_idx] = NULL;
+
+			words = get_words(token);
+
+			tmp_hope[last_idx - 1] = words;
+
+			token = strtok(NULL, " \n");
 		}
+	}
 
 	fclose(first);
 
@@ -114,16 +120,14 @@ do{
 	if(print_limit == 0){
 		print_limit = last_idx;
 	}
-
 	if(unique){
 		print_unique(tmp_hope, last_idx, print_limit);
 	}
 	if(reverse){
 		print_reverse(tmp_hope, last_idx, print_limit);
-	}
+	}else{
+		
 	puts("\n");
-
-
 
 		char **word_list = tmp_hope;
 		while(*word_list){
@@ -134,6 +138,7 @@ do{
 
 	free(tmp_hope);
 
+	}
 }
 
 
