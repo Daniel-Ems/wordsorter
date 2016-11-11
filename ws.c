@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 
 	int (*sort_func)(const void *a, const void *b) = &lexi_sort;
 
+	// Referncing movie_titler from class
 	int command_arguments;
 	while (-1 < (command_arguments = getopt(argc, argv, "rnlsauhc:"))){
 
@@ -65,12 +66,12 @@ int main(int argc, char *argv[])
 	}
 
 	int last_idx =0;
-	char **tmp_hope = malloc((1+last_idx) * sizeof(tmp_hope));
-	tmp_hope[0] = NULL;
+	char **word_list = malloc((1+last_idx) * sizeof(word_list));
+	word_list[0] = NULL;
 	char tmp_buf[64];
 	char *words;
 	char *token;
-	void *tmp_buffer;
+	void *realloc_buffer;
 	FILE *first;
 
 do{
@@ -92,18 +93,20 @@ do{
 			}
 
 			++last_idx;
-			tmp_buffer = realloc(tmp_hope, sizeof(tmp_hope) *(1 + last_idx));
-			if(!tmp_buffer){
+			realloc_buffer = realloc(word_list, sizeof(word_list) *(1 + last_idx));
+
+			// Reference Liam and his awesomeness.
+			if(!realloc_buffer){
 				printf("unable to realloc");
 			}
 
-			tmp_hope = tmp_buffer;
+			word_list = realloc_buffer;
 
-			tmp_hope[last_idx] = NULL;
+			word_list[last_idx] = NULL;
 
 			words = get_words(token);
 
-			tmp_hope[last_idx - 1] = words;
+			word_list[last_idx - 1] = words;
 
 			token = strtok(NULL, " \n");
 		}
@@ -113,7 +116,7 @@ do{
 
 	}while(argc> optind);
 
-	qsort(tmp_hope, last_idx, sizeof(char *), sort_func);
+	qsort(word_list, last_idx, sizeof(char *), sort_func);
 
 	if(print_limit == 0){
 		print_limit = last_idx;
@@ -121,19 +124,18 @@ do{
 
 	puts("\n");
 	if(reverse){
-		print_reverse(tmp_hope, last_idx, print_limit, unique);
+		print_reverse(word_list, last_idx, print_limit, unique);
 	}else{
-		print_lexi(tmp_hope, print_limit,last_idx, unique);
+		print_lexi(word_list, print_limit,last_idx, unique);
 	}
 
-		char **word_list = tmp_hope;
-		while(*word_list){
-			//printf("%s\n", *word_list);
-			free(*word_list);
-			++word_list;
+		char **free_buffer = word_list;
+		while(*free_buffer){
+			free(*free_buffer);
+			++free_buffer;
 		}
 
-	free(tmp_hope);
+	free(word_list);
 
 	}
 
