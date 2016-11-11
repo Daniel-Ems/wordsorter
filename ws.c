@@ -124,11 +124,13 @@ do{
 	if(unique){
 		print_unique(tmp_hope, last_idx, print_limit);
 	}
+	puts("\n");
 	if(reverse){
 		print_reverse(tmp_hope, last_idx, print_limit);
+	}else{
+		print_lexi(tmp_hope, print_limit);
 	}
 		
-	puts("\n");
 
 		char **word_list = tmp_hope;
 		while(*word_list){
