@@ -16,13 +16,15 @@ int main(int argc, char *argv[])
 	int print_limit = 0;
 	opterr = 0;
 	int command_arguments;
-	char *sort_func = lexi_sort;
-
+	//char *sort_func = lexi_sort;
+	//bool lexi_sort = false;
+	bool unique = false;
+	bool reverse = false;
 	while (-1 < (command_arguments = getopt(argc, argv, "rnlsauhc:"))){
 		switch(command_arguments){
 			case 'r':
 				//TODO: program prints in reverse
-				
+				reverse = true;
 				break;
 			case 'n':
 				//TODO: sorts as if they were numbers
@@ -30,7 +32,7 @@ int main(int argc, char *argv[])
 				break;
 			case 'l':
 				//TODO: sorts the words by length
-					sort_func =  length_sort;
+				//sort_func =  length_sort;
 				break;
 			case 's':
 				//TODO: sorts words by scrabble score
@@ -38,11 +40,12 @@ int main(int argc, char *argv[])
 				break;
 			case 'a':
 				//TODO: sorts lexicographically
-				sort_func = lexi_sort;
+				///sort_func = lexi_sort;
+				//lexi_sort = true;
 				break;
 			case 'u':
 				//TODO: only prints unique words, case sensitive
-				//printf("-u\n");
+				unique = true;
 				break;
 			case 'h':
 				//TODO: prints brief help message of any normal operation.
@@ -61,7 +64,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-//TODO: Place in a seperate file or function
 	int last_idx =0;
 	char **tmp_hope = malloc((1+last_idx) * sizeof(tmp_hope));
 	tmp_hope[0] = NULL;
@@ -96,7 +98,6 @@ do{
 				words = get_words(token);
 
 				tmp_hope[last_idx - 1] = words;
-				//printf("%s\n", tmp_hope[last_idx - 1]);
 
 				token = strtok(NULL, " \n");
 			}
@@ -106,19 +107,21 @@ do{
 
 	}while(argc> optind);
 
-	qsort(tmp_hope, last_idx, sizeof(char *), sort_func);
 
+	qsort(tmp_hope, last_idx, sizeof(char *), lexi_sort);
+
+	
 	if(print_limit == 0){
 		print_limit = last_idx;
 	}
 
+	if(unique){
 		print_unique(tmp_hope, last_idx, print_limit);
-
-		for(int i = (last_idx - 1); i >= last_idx - print_limit; i--){
-			printf("%s\n", tmp_hope[i]);
-		}
-
-		puts("\n");
+	}
+	if(reverse){
+		print_reverse(tmp_hope, last_idx, print_limit);
+	}
+	puts("\n");
 
 
 
