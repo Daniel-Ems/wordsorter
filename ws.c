@@ -8,8 +8,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+
+//int unique(const void *a, const void *b);
 int length_sort(const void *a, const void *b);
-int cmpfunc(const void *a, const void *b);
+int lexi_sort(const void *a, const void *b);
 char *get_words(char *token);
 int main(int argc, char *argv[])
 {
@@ -17,12 +19,13 @@ int main(int argc, char *argv[])
 	int print_limit = 0;
 	opterr = 0;
 	int command_arguments;
+	char *sort_func = lexi_sort;
 
 	while (-1 < (command_arguments = getopt(argc, argv, "rnlsauhc:"))){
 		switch(command_arguments){
 			case 'r':
 				//TODO: program prints in reverse
-				//printf("-r\n");
+				
 				break;
 			case 'n':
 				//TODO: sorts as if they were numbers
@@ -30,7 +33,7 @@ int main(int argc, char *argv[])
 				break;
 			case 'l':
 				//TODO: sorts the words by length
-				printf("-l\n");
+					sort_func =  length_sort;
 				break;
 			case 's':
 				//TODO: sorts words by scrabble score
@@ -38,7 +41,7 @@ int main(int argc, char *argv[])
 				break;
 			case 'a':
 				//TODO: sorts lexicographically
-				//printf("-a\n");
+				sort_func = lexi_sort;
 				break;
 			case 'u':
 				//TODO: only prints unique words, case sensitive
@@ -104,7 +107,7 @@ do{
 	fclose(first);
 	}while(argc> optind);
 
-	qsort(tmp_hope, last_idx, sizeof(char *), length_sort);
+	//qsort(tmp_hope, last_idx, sizeof(char *), sort_func);
 
 	if(print_limit == 0){
 		print_limit = last_idx;
@@ -117,10 +120,7 @@ do{
 
 		puts("\n");
 
-		//print certain number of results.
-		for(int i = 0; i < print_limit; i++){
-			printf("%s\n", tmp_hope[i]);
-		}
+		print_unique(tmp_hope, last_idx);
 
 
 		char **word_list = tmp_hope;
@@ -131,7 +131,6 @@ do{
 		}
 
 	free(tmp_hope);
-
 
 }
 
@@ -144,13 +143,25 @@ int length_sort(const void *a, const void *b)
 {
 	return strlen(*(const char**) a) - strlen( *(const char**)b);
 }
-/*
-int scrabble_score(const void *a, const void *b)
-{
-	value = 0;
 
-	while( -1 < 
-*/
+
+
+	//the inner four loop is compliment of Alexander Dow.
+void(print_unique)
+{
+		int count = 0;
+		int b = 0;
+		for(int i = 0; i < print_limit; i++){
+			for(b=(i+1); b < last_idx; b++){
+				if(!strcmp(tmp_hope[i],tmp_hope[b])){
+					count++;
+				}
+			}
+		if(count == 0){
+			printf("%s\n", tmp_hope[i]);
+			}
+		}
+}
 char *get_words(char *token)
 {
 			char buf[36];
