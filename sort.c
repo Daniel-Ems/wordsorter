@@ -3,6 +3,24 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+enum{LONGEST_WORD = 36};
+
+// Referencing our movie_titler from class.
+char *get_words(char *token)
+{
+	char buf[LONGEST_WORD];
+	size_t words_length = sizeof(buf) + 1;
+
+	char *words = malloc(words_length);
+	if(!words){
+		return 0;
+	}
+	strncpy(words, token, words_length);
+
+	return words;
+}
+
 int lexi_sort(const void *a, const void *b)
 {
 	return strcmp(*(const char**) a, *(const char**)b);
@@ -13,8 +31,7 @@ int length_sort(const void *a, const void *b)
 	return strlen(*(const char**) a) - strlen( *(const char**)b);
 }
 
-
-	//the inner four loop is compliment of Alexander Dow.
+// Alexander Dow helped me with solving the inner loop.  
 void print_unique(char **tmp_hope, int last_idx, int print_limit)
 {
 	int b = 0;
@@ -31,26 +48,14 @@ void print_unique(char **tmp_hope, int last_idx, int print_limit)
 	}
 }
 
-char *get_words(char *token)
-{
-	char buf[36];
-	size_t words_length = sizeof(buf) + 1;
-
-	char *words = malloc(words_length);
-	if(!words){
-		return 0;
-	}
-
-	strncpy(words, token, words_length);
-
-
-	return words;
-}
-
 void print_reverse(char **tmp_hope, int last_idx, int print_limit)
 {
 	for(int i = (last_idx - 1); i >= last_idx - print_limit; i--){
 		printf("%s\n", tmp_hope[i]);
 	}
 }
+
+
+
+
 
