@@ -14,5 +14,7 @@ void print_reverse(char **tmp_hope, int last_idx, int print_limit, bool unique);
 
 void print_lexi(char **tmp_hope, int print_limit,int last_idx, bool unique);
 
+void free_the_memory(char **word_list);
+
 #endif
 
