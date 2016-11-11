@@ -64,6 +64,14 @@ void print_lexi(char **word_list, int print_limit, int last_idx, bool unique)
 	}
 }
 
+void free_the_memory(char **word_list)
+{
+	char **free_buffer = word_list;
+			while(*free_buffer){
+				free(*free_buffer);
+				++free_buffer;
+			}
+}
 
 
 
