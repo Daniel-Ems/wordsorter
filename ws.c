@@ -85,9 +85,7 @@ do{
 	while(fgets(tmp_buf, 64, first)){
 
 		token = strtok(tmp_buf, " \n");
-
 		while(token){
-
 			if(token == NULL){
 				break;
 			}
@@ -113,7 +111,6 @@ do{
 	}
 
 	fclose(first);
-
 	}while(argc> optind);
 
 	qsort(word_list, last_idx, sizeof(char *), sort_func);
@@ -122,22 +119,16 @@ do{
 		print_limit = last_idx;
 	}
 
-	puts("\n");
 	if(reverse){
 		print_reverse(word_list, last_idx, print_limit, unique);
 	}else{
 		print_lexi(word_list, print_limit,last_idx, unique);
 	}
 
-		char **free_buffer = word_list;
-		while(*free_buffer){
-			free(*free_buffer);
-			++free_buffer;
-		}
-
+	free_the_memory(word_list);
 	free(word_list);
 
-	}
+}
 
 
 
